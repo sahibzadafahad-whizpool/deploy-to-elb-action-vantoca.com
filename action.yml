@@ -1,0 +1,24 @@
+# action.yml
+name: "Deploy to ELB"
+description: "Deploys to all servers behind an ELB using remove SSH execution."
+inputs:
+  script: # id of input
+    description: "Script to execute on each remote server"
+    required: true
+    default: "/home/ubuntu/deploy_ci.sh"
+  autoscaling_group_name: # id of input
+    description: Autoscaling group to deploy to
+    required: true
+  ssh_key: # id of input
+    description: Private SSH key to use to authenticate with the server"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.script }}
+    - ${{ inputs.autoscaling_group_name }}
+    - ${{ inputs.ssh_key }}
+branding:
+  icon: 'activity'
+  color: 'blue'
